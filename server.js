@@ -39,7 +39,7 @@ function hashOTP(otp) {
     return hash;
 }
 app.get("/",(req,res)=> {
-    res.send("opt verification home page!")
+    res.send("opt verification home page")
 })
 
 // Route for sending OTP
