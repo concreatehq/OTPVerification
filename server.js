@@ -48,7 +48,7 @@ app.post("/send-otp", (req, res) => {
     const hashedOTP = hashOTP(otp);
     const phoneNumber = req.body.to;
     otpMap.set(phoneNumber, hashedOTP); // Store hashed OTP in memory
-    console.log(phoneNumber);
+    // console.log(phoneNumber);
     client.messages
         .create({
             body: `Your OTP is: ${otp}`,
@@ -56,11 +56,11 @@ app.post("/send-otp", (req, res) => {
             from: process.env.from,
         })
         .then((message) => {
-            console.log(`OTP sent successfully SID: ${message.sid}`);
+            // console.log(`OTP sent successfully SID: ${message.sid}`);
             res.status(200).json({ success: true, message: "OTP sent successfully." });
         })
         .catch((error) => {
-            console.error('Error sending OTP:', error);
+            // console.error('Error sending OTP:', error);
             res.status(500).json({ success: false, error: "Failed to send OTP." });
         });
 });
@@ -110,13 +110,13 @@ app.post("/resend-otp", (req, res) => {
             from: process.env.from,
         })
         .then((message) => {
-            console.log(`OTP resent successfully SID: ${message.sid}`);
+            // console.log(`OTP resent successfully SID: ${message.sid}`);
             // Update the last sent time
             lastSentTimes[phoneNumber] = currentTime;
             res.status(200).json({ success: true, message: "OTP resent successfully." });
         })
         .catch((error) => {
-            console.error('Error resending OTP:', error);
+            // console.error('Error resending OTP:', error);
             res.status(400).json({ success: false, error: "Failed to resend OTP." });
         });
 });
@@ -146,13 +146,13 @@ app.post("/email-otp", (req, res) => {
     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
     sgMail.send(msg)
         .then(() => {
-            console.log("Email sent successfully.");
+            // console.log("Email sent successfully.");
             otpMap.set(email, hashedOTP); // Store hashed OTP in memory
             lastSentTimes[email] = currentTime; // Update the last sent time
             res.status(200).json({ success: true, message: "OTP sent successfully." });
         })
         .catch((error) => {
-            console.error('Error sending email:', error);
+            // console.error('Error sending email:', error);
             res.status(500).json({ success: false, error: "Failed to send OTP." });
         });
 });
@@ -177,7 +177,7 @@ app.post("/verify-email-otp", (req, res) => {
 
 // Error handling middleware
 app.use((err, req, res, next) => {
-    console.error(err.stack);
+    // console.error(err.stack);
     res.status(500).send('Something broke!');
 });
 
