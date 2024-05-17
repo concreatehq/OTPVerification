@@ -157,6 +157,24 @@ app.post("/email-otp", (req, res) => {
         });
 });
 
+// Route for verifying OTP sent via email
+app.post("/verify-email-otp", (req, res) => {
+    const enteredOTP = req.body.otp;
+    const email = req.body.email;
+    const storedOTP = otpMap.get(email); // Retrieve hashed OTP from memory
+    if (!storedOTP) {
+        return res.status(200).json({ success: false, message: "No OTP found for the given email." });
+    }
+    const hashedEnteredOTP = hashOTP(enteredOTP);
+    if (hashedEnteredOTP === storedOTP) {
+        otpMap.delete(email); // Remove OTP from memory after successful verification
+        res.status(200).json({ success: true, message: "OTP verified successfully." });
+    } else {
+        res.status(400).json({ success: false, message: "Invalid OTP. Please try again." });
+    }
+});
+
+
 // Error handling middleware
 app.use((err, req, res, next) => {
     console.error(err.stack);
