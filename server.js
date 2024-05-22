@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 5000;
 // Middleware
 app.use(express.json());
 const corsOptions = {   
-    origin: 'https://conc-2024-28ae6dec0620509af87035b01e19b.webflow.io', // Allow requests from your frontend
+    origin: 'https://conc-2024.webflow.io', // Allow requests from your frontend
     credentials: true // Allow credentials (cookies) to be sent with requests
 };
 app.use(cors(corsOptions));
@@ -81,7 +81,6 @@ app.post("/verify-otp", (req, res) => {
         res.status(400).json({ success: false, message: "Invalid OTP. Please try again." });
     }
 });
-
 // Route for resending OTP
 const resendInterval = 15 * 1000; // Resend interval idn milliseconds
 
@@ -123,7 +122,6 @@ app.post("/resend-otp", (req, res) => {
 
 app.post("/email-otp", (req, res) => {
     const { email } = req.body;
-
     // Check if OTP was recently sent within the last 30 seconds
     const currentTime = Date.now();
     const lastSentTime = lastSentTimes[email] || 0;
@@ -132,10 +130,8 @@ app.post("/email-otp", (req, res) => {
         const timeRemaining = Math.ceil((30 * 1000 - timeDifference) / 1000); // Convert remaining time to seconds
         return res.status(429).json({ success: false, message: `You can resend OTP after ${timeRemaining} seconds.` });
     }
-
     const otp = generateOTP(); // Generate OTP
     const hashedOTP = hashOTP(otp); // Hash OTP
-    
     const msg = {
         to: email,
         from: process.env.SENDGRID_SENDER_EMAIL,
@@ -143,7 +139,6 @@ app.post("/email-otp", (req, res) => {
         text: `Your OTP is: ${otp}`,
         // html:`Testing!`
     };
-    
     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
     sgMail.send(msg)
         .then(() => {
@@ -174,7 +169,6 @@ app.post("/verify-email-otp", (req, res) => {
         res.status(400).json({ success: false, message: "Invalid OTP. Please try again." });
     }
 });
-
 
 // Error handling middleware
 app.use((err, req, res, next) => {
