@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 5000;
 // Middleware
 app.use(express.json());
 const corsOptions = {   
-    origin: 'https://conc-2024-b6bb899730e8b9c6b1eb52b3969bf.webflow.io', // Allow requests from your frontend
+    origin: 'https://conc-2024v1.webflow.io', // Allow requests from your frontend
     credentials: true // Allow credentials (cookies) to be sent with requests
 };
 app.use(cors(corsOptions));
