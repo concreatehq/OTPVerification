@@ -170,6 +170,75 @@ app.post("/verify-email-otp", (req, res) => {
     }
 });
 
+// Route for resending OTP via email
+app.post("/resend-otp-email", (req, res) => {
+    const email = req.body.email;
+    const currentTime = Date.now();
+    const lastSentTime = lastSentTimes[email] || 0;
+    const timeDifference = currentTime - lastSentTime;
+
+    if (timeDifference < resendInterval) {
+        const timeRemaining = Math.ceil((resendInterval - timeDifference) / 1000);
+        return res.status(429).json({ success: false, message: `You can resend OTP after ${timeRemaining} seconds!` });
+    }
+
+    const otp = generateOTP();
+    const hashedOTP = hashOTP(otp);
+    otpMap.set(email, hashedOTP); // Store hashed OTP in memory
+
+    const msg = {
+        to: email,
+        from: process.env.SENDGRID_SENDER_EMAIL,
+        subject: 'Your OTP',
+        text: `Your OTP is: ${otp}`,
+    };
+
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+    sgMail.send(msg)
+        .then(() => {
+            lastSentTimes[email] = currentTime;
+            res.status(200).json({ success: true, message: "OTP resent successfully." });
+        })
+        .catch((error) => {
+            res.status(500).json({ success: false, error: "Failed to resend OTP." });
+        });
+
+});
+
+// Route for resending OTP via email
+app.post("/resend-otp-email", (req, res) => {
+    const email = req.body.email;
+    const currentTime = Date.now();
+    const lastSentTime = lastSentTimes[email] || 0;
+    const timeDifference = currentTime - lastSentTime;
+
+    if (timeDifference < resendInterval) {
+        const timeRemaining = Math.ceil((resendInterval - timeDifference) / 1000);
+        return res.status(429).json({ success: false, message: `You can resend OTP after ${timeRemaining} seconds!` });
+    }
+
+    const otp = generateOTP();
+    const hashedOTP = hashOTP(otp);
+    otpMap.set(email, hashedOTP); // Store hashed OTP in memory
+
+    const msg = {
+        to: email,
+        from: process.env.SENDGRID_SENDER_EMAIL,
+        subject: 'Your OTP',
+        text: `Your OTP is: ${otp}`,
+    };
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+    sgMail.send(msg)
+        .then(() => {
+            lastSentTimes[email] = currentTime;
+            res.status(200).json({ success: true, message: "OTP resent successfully." });
+        })
+        .catch((error) => {
+            res.status(500).json({ success: false, error: "Failed to resend OTP." });
+        });
+});
+
 // Error handling middleware
 app.use((err, req, res, next) => {
     // console.error(err.stack);
