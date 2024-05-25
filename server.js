@@ -140,7 +140,7 @@ app.post("/email-otp", (req, res) => {
         from: process.env.SENDGRID_SENDER_EMAIL,
         subject: 'Your OTP',
         text: `Your OTP is: ${otp}`,
-        html:template("Testing!"),
+        html:template(otp),
     };
     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
     sgMail.send(msg)
