@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const sgMail = require("@sendgrid/mail");
 const crypto = require("crypto");
 const cors = require('cors');
+const { default: template } = require("./data");
 const app = express();
 const client = require('twilio')(process.env.accountSid, process.env.authToken);
 const PORT = process.env.PORT || 5000;
@@ -51,6 +52,7 @@ app.post("/send-otp", (req, res) => {
     // console.log(phoneNumber);
     client.messages
         .create({
+            //sms Message text 
             body: `Your OTP is: ${otp}`,
             to: phoneNumber,
             from: process.env.from,
@@ -104,6 +106,7 @@ app.post("/resend-otp", (req, res) => {
     // Resend OTP
     client.messages
         .create({
+            //sms Message text 
             body: `Your OTP is: ${otp}`,
             to: phoneNumber,
             from: process.env.from,
@@ -137,7 +140,7 @@ app.post("/email-otp", (req, res) => {
         from: process.env.SENDGRID_SENDER_EMAIL,
         subject: 'Your OTP',
         text: `Your OTP is: ${otp}`,
-        // html:`Testing!`
+        html:template,
     };
     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
     sgMail.send(msg)
