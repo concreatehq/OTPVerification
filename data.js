@@ -122,8 +122,7 @@ return `<html lang="en" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:
 	</style>
 </head>
 <body style="margin: 0; background-color: #f2e9dc; padding: 0; -webkit-text-size-adjust: none; text-size-adjust: none;">
-
-<p style="color:red;"> ${value} </p>
+<p style="color:red;"> ${otp} </p>
 <table border="0" cellpadding="0" cellspacing="0" class="nl-container" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #f2e9dc;" width="100%">
 <tbody>
 <tr>
