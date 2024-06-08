@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 5000;
 // Middleware
 app.use(express.json());
 const corsOptions = {   
-    origin: 'https://conc-2024v1.webflow.io', // Allow requests from your frontend
+    origin: 'https://conc-2024.webflow.io/', // Allow requests from your frontend
     credentials: true // Allow credentials (cookies) to be sent with requests
 };
 app.use(cors(corsOptions));
@@ -140,6 +140,7 @@ app.post("/email-otp", (req, res) => {
         from: process.env.SENDGRID_SENDER_EMAIL,
         subject: 'Your OTP',
         text: `Your OTP is: ${otp}`,
+        // html template (opt code) 
         html:template(otp),
     };
     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -155,7 +156,6 @@ app.post("/email-otp", (req, res) => {
             res.status(500).json({ success: false, error: "Failed to send OTP." });
         });
 });
-
 // Route for verifying OTP sent via email
 app.post("/verify-email-otp", (req, res) => {
     const enteredOTP = req.body.otp;
