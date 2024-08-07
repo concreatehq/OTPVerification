@@ -107,7 +107,7 @@ app.post("/resend-otp", (req, res) => {
     client.messages
         .create({
             //sms Message text 
-            body: `Your OTP is: ${otp}`,
+            body: `${otp} is your OTP to get a free quote from Concreate. Ready to create something amazing? Oh, and by the way, you’re looking good today :wink:`,
             to: phoneNumber,
             from: process.env.from,
         })
