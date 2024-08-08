@@ -139,9 +139,8 @@ app.post("/email-otp", (req, res) => {
         to: email,
         from: process.env.SENDGRID_SENDER_EMAIL,
         subject: 'Your OTP',
-        text: `Your OTP is: ${otp}`,
-        // html template (opt code) 
-        html:template(otp),
+        text: `${otp} is your OTP to get a free quote from Concreate. Ready to create something amazing? Oh, and by the way, you’re looking good today ;)`,
+        // html template (opt code)
     };
     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
     sgMail.send(msg)
