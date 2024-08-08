@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 5000;
 // Middleware
 app.use(express.json());
 const corsOptions = {   
-    origin: 'https://conc.in', // Allow requests from your frontend
+    origin: 'https://www.conc.in/', // Allow requests from your frontend
     credentials: true // Allow credentials (cookies) to be sent with requests
 };
 app.use(cors(corsOptions));
