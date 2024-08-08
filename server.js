@@ -53,7 +53,7 @@ app.post("/send-otp", (req, res) => {
     client.messages
         .create({
             //sms Message text 
-            body: `Your OTP is: ${otp}`,
+            body: `${otp} is your OTP to get a free quote from Concreate. Ready to create something amazing? Oh, and by the way, you’re looking good today ;)`,
             to: phoneNumber,
             from: process.env.from,
         })
@@ -192,7 +192,7 @@ app.post("/resend-otp-email", (req, res) => {
         to: email,
         from: process.env.SENDGRID_SENDER_EMAIL,
         subject: 'Your OTP',
-        text: `Your OTP is: ${otp}`,
+        text: `${otp} is your OTP to get a free quote from Concreate. Ready to create something amazing? Oh, and by the way, you’re looking good today ;)`,
     };
 
     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
